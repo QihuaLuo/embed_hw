@@ -1,0 +1,80 @@
+
+compile hw02
+
+qihua@ubuntu:~/buildArmlinux/EmbeddedFW/homework/hw02$ make
+make: Warning: File `main.cpp' has modification time 2.5e+04 s in the future
+arm-none-eabi-g++ -mcpu=cortex-m3 -mthumb -c -g -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -MMD -MP -DNDEBUG -Os -DTARGET_LPC1768 -DTARGET_M3 -DTARGET_CORTEX_M -DTARGET_NXP -DTARGET_LPC176X -DTARGET_MBED_LPC1768 -DTOOLCHAIN_GCC_ARM -DTOOLCHAIN_GCC -D__CORTEX_M3 -DARM_MATH_CM3 -DMBED_BUILD_TIMESTAMP=1429489157.05 -D__MBED__=1  -std=gnu++98 -fno-rtti -I. -I./mbed -I./mbed/TARGET_LPC1768 -I./mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM -I./mbed/TARGET_LPC1768/TARGET_NXP -I./mbed/TARGET_LPC1768/TARGET_NXP/TARGET_LPC176X -I./mbed/TARGET_LPC1768/TARGET_NXP/TARGET_LPC176X/TARGET_MBED_LPC1768 -I./TextLCD  -o main.o main.cpp
+arm-none-eabi-g++ -mcpu=cortex-m3 -mthumb -c -g -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -MMD -MP -DNDEBUG -Os -DTARGET_LPC1768 -DTARGET_M3 -DTARGET_CORTEX_M -DTARGET_NXP -DTARGET_LPC176X -DTARGET_MBED_LPC1768 -DTOOLCHAIN_GCC_ARM -DTOOLCHAIN_GCC -D__CORTEX_M3 -DARM_MATH_CM3 -DMBED_BUILD_TIMESTAMP=1429489157.05 -D__MBED__=1  -std=gnu++98 -fno-rtti -I. -I./mbed -I./mbed/TARGET_LPC1768 -I./mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM -I./mbed/TARGET_LPC1768/TARGET_NXP -I./mbed/TARGET_LPC1768/TARGET_NXP/TARGET_LPC176X -I./mbed/TARGET_LPC1768/TARGET_NXP/TARGET_LPC176X/TARGET_MBED_LPC1768 -I./TextLCD  -o TextLCD/TextLCD.o TextLCD/TextLCD.cpp
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -Wl,--gc-sections --specs=nano.specs -u _printf_float -u _scanf_float -Wl,--wrap,main -Wl,-Map=.map,--cref -T./mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/LPC1768.ld -L./mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM  -o .elf main.o TextLCD/TextLCD.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/cmsis_nvic.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/system_LPC17xx.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/board.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/retarget.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/startup_LPC17xx.o -lmbed  -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -lmbed  -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
+
+*****
+***** You must modify vector checksum value in *.bin and *.hex files.
+*****
+
+arm-none-eabi-size .elf
+   text	   data	    bss	    dec	    hex	filename
+  27080	    176	    548	  27804	   6c9c	.elf
+make: warning:  Clock skew detected.  Your build may be incomplete.
+qihua@ubuntu:~/buildArmlinux/EmbeddedFW/homework/hw02$ /home/qihua/9G20u_tool_chain/gcc-arm-none-eabi-4_9-2015q1/bin/arm-none-eabi-objdump -d main.o
+
+main.o:     file format elf32-littlearm
+
+
+Disassembly of section .text._Z6togglev:
+
+00000000 <_Z6togglev>:
+   0:	b508      	push	{r3, lr}
+   2:	4b0a      	ldr	r3, [pc, #40]	; (2c <_Z6togglev+0x2c>)
+   4:	2240      	movs	r2, #64	; 0x40
+   6:	701a      	strb	r2, [r3, #0]
+   8:	4a09      	ldr	r2, [pc, #36]	; (30 <_Z6togglev+0x30>)
+   a:	2032      	movs	r0, #50	; 0x32
+   c:	7813      	ldrb	r3, [r2, #0]
+   e:	f043 0340 	orr.w	r3, r3, #64	; 0x40
+  12:	7013      	strb	r3, [r2, #0]
+  14:	f7ff fffe 	bl	0 <wait_ms>
+  18:	4a06      	ldr	r2, [pc, #24]	; (34 <_Z6togglev+0x34>)
+  1a:	2032      	movs	r0, #50	; 0x32
+  1c:	7813      	ldrb	r3, [r2, #0]
+  1e:	f043 0340 	orr.w	r3, r3, #64	; 0x40
+  22:	7013      	strb	r3, [r2, #0]
+  24:	f7ff fffe 	bl	0 <wait_ms>
+  28:	e7ee      	b.n	8 <_Z6togglev+0x8>
+  2a:	bf00      	nop
+  2c:	2009c000 	.word	0x2009c000
+  30:	2009c018 	.word	0x2009c018
+  34:	2009c01c 	.word	0x2009c01c
+
+Disassembly of section .text._Z7readingPh:
+
+00000000 <_Z7readingPh>:
+   0:	b5f0      	push	{r4, r5, r6, r7, lr}
+   2:	4b0b      	ldr	r3, [pc, #44]	; (30 <_Z7readingPh+0x30>)
+   4:	2200      	movs	r2, #0
+   6:	701a      	strb	r2, [r3, #0]
+   8:	f893 e014 	ldrb.w	lr, [r3, #20]
+   c:	7d1f      	ldrb	r7, [r3, #20]
+   e:	7d1e      	ldrb	r6, [r3, #20]
+  10:	7d1d      	ldrb	r5, [r3, #20]
+  12:	7d1c      	ldrb	r4, [r3, #20]
+  14:	7d19      	ldrb	r1, [r3, #20]
+  16:	7d1a      	ldrb	r2, [r3, #20]
+  18:	3314      	adds	r3, #20
+  1a:	781b      	ldrb	r3, [r3, #0]
+  1c:	f880 e000 	strb.w	lr, [r0]
+  20:	7047      	strb	r7, [r0, #1]
+  22:	7086      	strb	r6, [r0, #2]
+  24:	70c5      	strb	r5, [r0, #3]
+  26:	7104      	strb	r4, [r0, #4]
+  28:	7141      	strb	r1, [r0, #5]
+  2a:	7182      	strb	r2, [r0, #6]
+  2c:	71c3      	strb	r3, [r0, #7]
+  2e:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  30:	2009c002 	.word	0x2009c002
+
+Disassembly of section .text.startup.main:
+
+00000000 <main>:
+   0:	b508      	push	{r3, lr}
+   2:	f7ff fffe 	bl	0 <main>
+

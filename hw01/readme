@@ -1,0 +1,50 @@
+Embedded Firmware hw01: output speed
+
+Qihua Luo: 4/12/2015
+
+Following are I create GCC toolchain and compile the C code and run objdump.
+
+
+qihua@ubuntu:~/buildArmlinux/HomeWorks/hw01/mbed_output$ make
+arm-none-eabi-g++ -mcpu=cortex-m3 -mthumb -c -g -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -MMD -MP -DNDEBUG -Os -DTARGET_LPC1768 -DTARGET_M3 -DTARGET_CORTEX_M -DTARGET_NXP -DTARGET_LPC176X -DTARGET_MBED_LPC1768 -DTOOLCHAIN_GCC_ARM -DTOOLCHAIN_GCC -D__CORTEX_M3 -DARM_MATH_CM3 -DMBED_BUILD_TIMESTAMP=1429211952.1 -D__MBED__=1  -std=gnu++98 -fno-rtti -I. -I./mbed -I./mbed/TARGET_LPC1768 -I./mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM -I./mbed/TARGET_LPC1768/TARGET_NXP -I./mbed/TARGET_LPC1768/TARGET_NXP/TARGET_LPC176X -I./mbed/TARGET_LPC1768/TARGET_NXP/TARGET_LPC176X/TARGET_MBED_LPC1768  -o main.o main.cpp
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -Wl,--gc-sections --specs=nano.specs -u _printf_float -u _scanf_float -Wl,--wrap,main -Wl,-Map=mbed_output.map,--cref -T./mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/LPC1768.ld -L./mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM  -o mbed_output.elf main.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/cmsis_nvic.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/system_LPC17xx.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/board.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/retarget.o mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM/startup_LPC17xx.o -lmbed  -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -lmbed  -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
+
+*****
+***** You must modify vector checksum value in *.bin and *.hex files.
+*****
+
+arm-none-eabi-size mbed_output.elf
+   text	   data	    bss	    dec	    hex	filename
+  27816	    176	    548	  28540	   6f7c	mbed_output.elf
+
+qihua@ubuntu:~/buildArmlinux/HomeWorks/hw01/mbed_output$ /home/qihua/9G20u_tool_chain/gcc-arm-none-eabi-4_9-2015q1/bin/arm-none-eabi-objdump -d main.o
+
+main.o:     file format elf32-littlearm
+
+
+Disassembly of section .text.startup.main:
+
+00000000 <main>:
+   0:	4b09      	ldr	r3, [pc, #36]	; (28 <main+0x28>)
+   2:	22ff      	movs	r2, #255	; 0xff
+   4:	21bf      	movs	r1, #191	; 0xbf
+   6:	b510      	push	{r4, lr}
+   8:	331c      	adds	r3, #28
+   a:	f843 2c1c 	str.w	r2, [r3, #-28]
+   e:	f843 1c0c 	str.w	r1, [r3, #-12]
+  12:	601a      	str	r2, [r3, #0]
+  14:	461c      	mov	r4, r3
+  16:	4a05      	ldr	r2, [pc, #20]	; (2c <main+0x2c>)
+  18:	2340      	movs	r3, #64	; 0x40
+  1a:	6013      	str	r3, [r2, #0]
+  1c:	4804      	ldr	r0, [pc, #16]	; (30 <main+0x30>)
+  1e:	6023      	str	r3, [r4, #0]
+  20:	f7ff fffe 	bl	0 <wait>
+  24:	e7f7      	b.n	16 <main+0x16>
+  26:	bf00      	nop
+  28:	2009c000 	.word	0x2009c000
+  2c:	2009c018 	.word	0x2009c018
+  30:	3e4ccccd 	.word	0x3e4ccccd
+
+
+
