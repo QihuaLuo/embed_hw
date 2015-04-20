@@ -1,0 +1,63 @@
+Embedded Firmware: Qihua Luo 4/20/2015
+
+Q1: Is there any compile error with the following code (if any)?
+unsigned int Arr[16];
+	3[Arr] = 7; 
+Explain: Just show a warning: Variable "Arr" was set but never used in "main.cpp".
+
+const int * px; --- the px is a variable pointer to an integer constant.
+int const * px; --- the px is a variable pointer to an integer constant.
+int * const px; --- px is a constant pointer to integer variable.	
+
+
+ Is there any compile error for the following cases?
+case1: 
+int x = 13; 
+const int * px; 
+px = & x;
+
+No error,
+
+case 2: 
+int x = 13; 
+int const * px; 
+px = & x;
+
+No error.
+
+case 3: 
+int x = 13; 
+int * const px; 
+px = & x; 
+
+Error: Error: Const variable "px" requires an initializer, Expression must be a modifiable lvalue “px = &x;.
+
+Q3: Write a function to set or clear ith bit of a 32-bit register. 
+Where ith (0-based) := {0, 1, 2, …, 31 } 
+
+void reg_set(volatile unsigned int * pReg, int ith) 
+{ 
+*pReg  |= (1<<ith);
+} 
+
+void reg_clear(volatile unsigned int * pReg, int ith) 
+{ 
+*pReg  &= ~(1<<ith);
+}
+
+Q4: Write a swap function in C.
+void swap(unsigned int * px, unsigned int *py) { 
+unsigned int tmp;
+tmp = *px;
+*px = *py;
+*py = tmp;
+} 
+
+Q5:	What is the output of the following code? (Given: sizeof(unsigned int) is 4) Page 34 
+
+unsigned int Arr[16]; 
+unsigned int a0 = (unsigned int) &Arr[0]; 
+unsigned int a3 = (unsigned int) &Arr[3]; 
+printf(“%d\n”, a3 – a0); 
+The result is:  (3-0) x 4 = 12.
+
